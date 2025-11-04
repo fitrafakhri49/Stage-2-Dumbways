@@ -33,11 +33,10 @@ export const getProduct= async(req:Request,res:Response)=>{
   try {
     const id = parseInt(req.params.id);
     const product=await prisma.product.findUnique({ where:{id}})
-    if(product===null){
-      res.status(404).json({error:"Product not found"})
+    if (product==null) {
+      res.status(404).json({error:"Product Not Found"})
     }
     res.status(200).json(product)
-
   } catch (error) {
     res.status(500).json({error:"Failed to get specific product"})
   }
@@ -51,9 +50,7 @@ try {
     where:{id:numberId},
     data:{name,price},
   })
-  if(!updateProduct){
-    res.status(404).json({error:"product not found"})
-  }
+
   res.status(201).json({updateProduct})
 } catch (error) {
   res.status(500).json({error:"Failed to edit specific product"})
