@@ -61,6 +61,7 @@ export const updatePost=async (req:Request,res:Response) => {
          where:{id},
          data:{authorId,title,content  } 
         })
+        res.status(201).json({updatePost,message:"Post Updated"})
     } catch (error) {
   res.status(500).json({error:"Failed to Update Post"})
         

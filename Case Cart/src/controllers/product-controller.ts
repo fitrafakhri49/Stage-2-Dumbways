@@ -1,7 +1,7 @@
 import { Request,Response } from "express";
 // import { products,Product } from "../models/model";
 import { prisma } from "../connection/client";
-import { products } from "../models/model";
+// import { products } from "../models/model";
 
 export const getProducts= async(req:Request, res:Response)=>{
 
