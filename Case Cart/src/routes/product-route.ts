@@ -8,5 +8,4 @@ router.get('/product/:id', getProduct)
 router.post('/product',createProduct)
 router.put('/product/:id', updateProduct)
 router.delete('/product/:id', deleteProduct)
-// router.put('/product/:id', editProduct)
 export default router

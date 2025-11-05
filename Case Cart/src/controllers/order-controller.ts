@@ -1,44 +1,72 @@
 import { Request,Response } from "express";
-import { products,orders,Order,} from "../models/model";
+// import { products,orders,Order,} from "../models/model";
+import { prisma } from "../prisma/client";
 
-export const getOrder=(req:Request,res:Response)=>{
-    res.json(orders);
-}
+export const getOrders= async(req:Request, res:Response)=>{
 
-
-export const createOrder=(req:Request,res:Response)=>{
-    const {productId,quantity}=req.body;
-    const product=products.find((p)=>p.id===Number(productId))
-    if(!product){
-        return res.status(400).json({message:"Produk Tidak Ditemukan"})
+    try {
+      const orders =await prisma.order.findMany()
+      res.status(200).json(orders)
+    } catch (error) {
+      res.status(500).json({error:"Failed to Fetch Data"})
     }
-    const newOrder:Order={
-        id:orders.length +1,
-        productId,
-        quantity
+    
     }
-    orders.push(newOrder)
-    res.status(201).json(newOrder)
-}
-
-export const editOrder=(req:Request,res:Response)=>{
-    const {id}=req.params;
-    const {quantity}=req.body;
-    const order = orders.find((p)=> p.id === Number(id));
-    if(!order){
-        return res.status(404).json({message:"Id Order tidak ditemukan"})
+    
+    export const createOrder=async(req:Request,res:Response)=>{
+    try {
+      const{userId,productId,quantity}=req.body
+     const createorder= await prisma.order.create({
+        data:{userId,productId,quantity}
+      }
+      );
+      res.status(201).json({message:"Order Has Been Created",createorder})
+    } catch (error) {
+      res.status(500).json({error:"Failed to create order"})
+      
     }
-    order.quantity=quantity?? order.quantity;
-    return res.status(200).json({
-        message: "Order Telah Diedit"
-    })
-}
-
-export const deleteOrder=(req:Request,res:Response)=>{
-    const {id}=req.params;
-    const index=orders.findIndex((p)=>p.id==Number(id))
-    orders.splice(index,1)
-    res.status(200).json({message:"order telah dihapus"})
-
-}
-
+    }
+    
+    
+    export const getOrder= async(req:Request,res:Response)=>{
+      try {
+        const id = parseInt(req.params.id);
+        const getorder=await prisma.order.findUnique({ where:{id}})
+        if (getorder==null) {
+          res.status(404).json({error:"OrderNot Found"})
+        }
+        res.status(200).json({message:"Order Has Been Found",getorder})
+      } catch (error) {
+        res.status(500).json({error:"Failed to get specific order"})
+      }
+    }
+    
+    export const updateOrder=async (req:Request,res:Response) => {
+    try {
+      const numberId= parseInt(req.params.id)
+      const {userId,productId,quantity}=req.body;
+      const updateorder= await prisma.order.update({
+        where:{id:numberId},
+        data:{userId,productId,quantity},
+      })
+    
+      res.status(201).json({message:"Order Has Been Updated",updateorder})
+    } catch (error) {
+      res.status(500).json({error:"Failed to edit specific Order"})
+    }
+    }
+    
+    export const deleteOrder=async (req:Request,res:Response)=>{
+      try {
+        
+        const numberId=parseInt(req.params.id);
+        const deleteorder=await prisma.order.delete({
+          where:{id:numberId},
+        })
+        res.status(200).json({message:"Product deleted",deleteorder})
+      } catch (error) {
+      res.status(500).json({error:"Failed to delete specific Order"})
+    
+      }
+    }
+    
