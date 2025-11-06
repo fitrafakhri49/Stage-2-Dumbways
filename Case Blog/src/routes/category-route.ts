@@ -1,13 +1,11 @@
 import express from "express";
-import { getPosts,getPost } from "../controllers/post-controller";
+import { getCategories,getCategory,} from "../controllers/category-controller";
 
 
 const router= express.Router()
 
-router.get('/posts', getPosts)
-router.get('/posts/:id',getPost)
-
-// JANGAN DIHAPUS
+router.get('/categories', getCategories)
+router.get('/categories/:id',getCategory)
 // router.post('/posts', createPost)
 // router.delete('/posts/:id', deletePost)
 // router.put('/posts/:id', updatePost)

@@ -8,6 +8,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ts-node-dev src/app.ts"
   },
+  "prisma": {
+    "seed": "ts-node src/prisma/seed.ts"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

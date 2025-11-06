@@ -13,18 +13,36 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model users {
-  id        Int      @id @default(autoincrement())
-  author    String
-  createdAt DateTime @default(now())
-  posts     posts[]
+// model users {
+//   id        Int      @id @default(autoincrement())
+//   author    String
+//   createdAt DateTime @default(now())
+//   posts     posts[]
+// }
+
+model Categories {
+  id       Int    @id @default(autoincrement())
+  category String
+
+  post Posts[]
 }
 
-model posts {
+model Posts {
+  id         Int      @id @default(autoincrement())
+  title      String
+  content    String
+  categoryId Int
+  createdAt  DateTime @default(now())
+
+  category Categories @relation(fields: [categoryId], references: [id])
+  comments Comments[]
+}
+
+model Comments {
   id        Int      @id @default(autoincrement())
-  authorId  Int
-  author    users    @relation(fields: [authorId], references: [id])
-  title     String
-  content   String
+  postId    Int
+  comments  String
   createdAt DateTime @default(now())
+
+  post Posts @relation(fields: [postId], references: [id])
 }

@@ -1,10 +1,22 @@
 import { Request,Response } from "express";
-import { prisma } from "../connection/client";
+import { prisma } from "../prisma/client";
 
 export const getPosts= async(req:Request,res:Response)=>{
+    const {
+        sortBy,
+        order,
+        category,
+        limit,
+        offset
+      }=req.query;
+      const filters : any ={};
+    if(category) filters.categoryId=parseInt(category as string)
     try {
-        const users=await prisma.posts.findMany()
-        res.status(200).json(users)
+
+        const posts=await prisma.posts.findMany({
+            where :filters
+        })
+        res.status(200).json(posts)
     } catch (error) {
   res.status(500).json({error:"Failed to Fetch Posts"})
         
@@ -27,43 +39,45 @@ export const getPost=async (req:Request,res:Response) => {
     }
 }
 
-export const createPost=async (req:Request,res:Response) => {
-    try {
-        const {title,content,authorId}=req.body
-        const createPost=await prisma.posts.create({
-            data:{title,content,authorId}
-        })
-        res.status(201).json(createPost)
-    } catch (error) {
-  res.status(500).json({error:"Failed to Create Post"})
-        
-    }
-}
 
-export const deletePost=async (req:Request,res:Response) => {
-    try {
-        const id=parseInt(req.params.id)
-        const deletePost=await prisma.posts.delete({
-            where:{id}
-        })
-        res.status(201).json({deletePost,message:"Successfully Deleted"})
-    } catch (error) {
-  res.status(500).json({error:"Failed to Delete Post"})
+//JANGAN DIHAPUS
+// export const createPost=async (req:Request,res:Response) => {
+//     try {
+//         const {title,content,authorId}=req.body
+//         const createPost=await prisma.posts.create({
+//             data:{title,content,authorId}
+//         })
+//         res.status(201).json(createPost)
+//     } catch (error) {
+//   res.status(500).json({error:"Failed to Create Post"})
         
-    }
-}
+//     }
+// }
 
-export const updatePost=async (req:Request,res:Response) => {
-    try {
-        const {authorId,title,content}=req.body
-        const id=parseInt(req.params.id)
-        const updatePost=await prisma.posts.update({
-         where:{id},
-         data:{authorId,title,content  } 
-        })
-        res.status(201).json({updatePost,message:"Post Updated"})
-    } catch (error) {
-  res.status(500).json({error:"Failed to Update Post"})
+// export const deletePost=async (req:Request,res:Response) => {
+//     try {
+//         const id=parseInt(req.params.id)
+//         const deletePost=await prisma.posts.delete({
+//             where:{id}
+//         })
+//         res.status(201).json({deletePost,message:"Successfully Deleted"})
+//     } catch (error) {
+//   res.status(500).json({error:"Failed to Delete Post"})
         
-    }
-}
+//     }
+// }
+
+// export const updatePost=async (req:Request,res:Response) => {
+//     try {
+//         const {authorId,title,content}=req.body
+//         const id=parseInt(req.params.id)
+//         const updatePost=await prisma.posts.update({
+//          where:{id},
+//          data:{authorId,title,content  } 
+//         })
+//         res.status(201).json({updatePost,message:"Post Updated"})
+//     } catch (error) {
+//   res.status(500).json({error:"Failed to Update Post"})
+        
+//     }
+// }

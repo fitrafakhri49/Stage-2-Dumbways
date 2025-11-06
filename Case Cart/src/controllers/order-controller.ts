@@ -28,19 +28,64 @@ export const getOrders= async(req:Request, res:Response)=>{
     }
     
     
-    export const getOrder= async(req:Request,res:Response)=>{
+    // export const getOrder= async(req:Request,res:Response)=>{
+    //   try {
+    //     const id = parseInt(req.params.id);
+    //     const getorder=await prisma.order.findUnique({ where:{id}})
+    //     if (getorder==null) {
+    //       res.status(404).json({error:"OrderNot Found"})
+    //     }
+    //     res.status(200).json({message:"Order Has Been Found",getorder})
+    //   } catch (error) {
+    //     res.status(500).json({error:"Failed to get specific dedem"})
+    //   }
+    // }
+
+    // export const getSumOrder=async (req:Request,res:Response) => {
+    //     try {
+    //         const summary=await prisma.order.groupBy({
+    //             by:['userId'],
+    //             _count:{
+    //                 id:true
+    //             }
+    //         })
+    //         res.status(200).json(summary)
+
+    //     } catch (error) {
+            
+    //         res.status(500).json({
+    //           error: "Failed to get specific order",
+    //         });
+    //       }
+    // }
+    
+
+
+    export const getSumOrder=async (req:Request,res:Response) => {
+      const {groupBy,sortBy,order,limit,offset}=req.query
+      const group=(groupBy as any|| "userId")
+      const sort=(sortBy as any )
       try {
-        const id = parseInt(req.params.id);
-        const getorder=await prisma.order.findUnique({ where:{id}})
-        if (getorder==null) {
-          res.status(404).json({error:"OrderNot Found"})
-        }
-        res.status(200).json({message:"Order Has Been Found",getorder})
+        const summary = await prisma.order.groupBy({
+          by:[group],
+          _count:{
+            id:true
+          },
+          orderBy:{
+            [sort]:order as "asc " ||
+      "desc"    },
+            take:Number(limit),
+            skip:Number(offset)
+        })
+        res.status(200).json({data:summary})
       } catch (error) {
-        res.status(500).json({error:"Failed to get specific order"})
+        res.status(500).json({
+          error: "Failed to get specific Order",
+        });
       }
     }
-    
+
+
     export const updateOrder=async (req:Request,res:Response) => {
     try {
       const numberId= parseInt(req.params.id)
@@ -56,6 +101,7 @@ export const getOrders= async(req:Request, res:Response)=>{
     }
     }
     
+
     export const deleteOrder=async (req:Request,res:Response)=>{
       try {
         
