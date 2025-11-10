@@ -16,28 +16,24 @@ datasource db {
 model Product {
   id        Int      @id @default(autoincrement())
   name      String
-  price     Float
-  stock     Int
+  quantity  Int      @default(0)
+  stock     Stock[]
   createdAt DateTime @default(now())
-  orders    Order[]
 }
 
-model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String
-  createdAt DateTime @default(now())
-
-  orders Order[]
+model Supplier {
+  id          Int     @id @default(autoincrement())
+  name        String
+  stockAmount Int     @default(0) // total stock dari semua produk
+  stock       Stock[] // Relasi ke Stock
 }
 
-model Order {
-  id        Int      @id @default(autoincrement())
-  userId    Int
-  productId Int
-  quantity  Int
-  createdAt DateTime @default(now())
+model Stock {
+  id         Int @id @default(autoincrement())
+  productId  Int
+  supplierId Int
+  stock      Int
 
-  user    User    @relation(fields: [userId], references: [id])
-  product Product @relation(fields: [productId], references: [id])
+  product  Product  @relation(fields: [productId], references: [id])
+  supplier Supplier @relation(fields: [supplierId], references: [id])
 }

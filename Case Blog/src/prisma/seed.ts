@@ -7,11 +7,21 @@ async function main() {
     await prisma.comments.deleteMany()
     await prisma.posts.deleteMany()
     await prisma.categories.deleteMany()
+    await prisma.users.deleteMany()
    
    
 
-    // create users
-    const category =await prisma.categories.createMany({
+
+        // create user 
+        const user=await prisma.users.createMany({
+            data:[
+                {name:"Fakhri 1",email:"fitra1@example.com",points:500},
+                {name:"Fakhri 2",email:"fitra2@example.com",points:800},
+                {name:"Fakhri 3",email:"fitra3@example.com",points:400}
+            ]
+        })
+    // create category
+    const categories =await prisma.categories.createMany({
         data:[
             {category:"Category 1"},
             {category:"Category 2"},
@@ -24,8 +34,8 @@ async function main() {
 
 
 
-// create product 
-const post=await prisma.posts.createMany({
+// create post
+const posts=await prisma.posts.createMany({
     data:[
    {title:"Title 1",content:"Content 1",categoryId:1},
    {title:"Title 2",content:"Content 2",categoryId:2},
@@ -38,8 +48,8 @@ const post=await prisma.posts.createMany({
    {title:"Title 9",content:"Content 9",categoryId:3},
     ],
 });
-// create orders 
-const orders = await prisma.comments.createMany({
+// create comment 
+const comments = await prisma.comments.createMany({
     data:[
         {postId:1,comments:"comment 1"},
         {postId:2,comments:"comment 2"},
