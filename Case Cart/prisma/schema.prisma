@@ -13,27 +13,33 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Product {
+model Users {
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  password String
+  role     String @default("user")
+}
+
+model Products {
   id        Int      @id @default(autoincrement())
   name      String
   quantity  Int      @default(0)
-  stock     Stock[]
   createdAt DateTime @default(now())
 }
 
-model Supplier {
-  id          Int     @id @default(autoincrement())
-  name        String
-  stockAmount Int     @default(0) // total stock dari semua produk
-  stock       Stock[] // Relasi ke Stock
-}
+// model Supplier {
+//   id          Int     @id @default(autoincrement())
+//   name        String
+//   stockAmount Int     @default(0) // total stock dari semua produk
+//   stock       Stock[] // Relasi ke Stock
+// }
 
-model Stock {
-  id         Int @id @default(autoincrement())
-  productId  Int
-  supplierId Int
-  stock      Int
+// model Stock {
+//   id         Int @id @default(autoincrement())
+//   productId  Int
+//   supplierId Int
+//   stock      Int
 
-  product  Product  @relation(fields: [productId], references: [id])
-  supplier Supplier @relation(fields: [supplierId], references: [id])
-}
+//   product  Product  @relation(fields: [productId], references: [id])
+//   supplier Supplier @relation(fields: [supplierId], references: [id])
+// }

@@ -12,14 +12,14 @@ async function main() {
    
 
 
-        // create user 
-        const user=await prisma.users.createMany({
-            data:[
-                {name:"Fakhri 1",email:"fitra1@example.com",points:500},
-                {name:"Fakhri 2",email:"fitra2@example.com",points:800},
-                {name:"Fakhri 3",email:"fitra3@example.com",points:400}
-            ]
-        })
+        // // create user 
+        // const user=await prisma.users.createMany({
+        //     data:[
+        //         {name:"Fakhri 1",email:"fitra1@example.com",points:500},
+        //         {name:"Fakhri 2",email:"fitra2@example.com",points:800},
+        //         {name:"Fakhri 3",email:"fitra3@example.com",points:400}
+        //     ]
+        // })
     // create category
     const categories =await prisma.categories.createMany({
         data:[
