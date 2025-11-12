@@ -7,6 +7,7 @@ import transferRoute from "./routes/transfer-point";
 import  authRoute  from "../src/routes/auth";
 import  loginRoute  from "../src/routes/auth";
 import  registerRoute  from "../src/routes/auth";
+import path from "path";
 
 const app=express()
 app.use((err:any,req:any,res:any,next:any)=>{
@@ -15,7 +16,7 @@ app.use((err:any,req:any,res:any,next:any)=>{
 
 }
 )
-
+app.use("/upload-profile-picture", express.static(path.join(__dirname,"uploads")))
 app.use("/auth", authRoute)
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

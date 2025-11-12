@@ -44,10 +44,17 @@ try {
         res.status(400).json({ message: error.message });
         return;
       }
-  const{name,quantity}=req.body
+      if(!req.file){
+        res.status(400).json({ message: "mohon upload foto produk" });
+        return
+      }
+  const{name,quantity,}=req.body
+  const qty = parseInt(quantity);
+  const image=req.file.filename
+
   // const result = await productValidation(name);
  const createproduct= await prisma.products.create({
-    data:{name,quantity:quantity}
+    data:{name,quantity:qty,image}
   }
   );
   res.status(201).json({message:"Product Has Been Created",createproduct})

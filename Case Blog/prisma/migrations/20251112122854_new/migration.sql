@@ -1,18 +1,13 @@
-/*
-  Warnings:
+-- CreateTable
+CREATE TABLE "users" (
+    "id" SERIAL NOT NULL,
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "imageProfile" TEXT NOT NULL,
+    "role" TEXT NOT NULL DEFAULT 'user',
 
-  - You are about to drop the `posts` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `users` table. If the table is not empty, all the data it contains will be lost.
-
-*/
--- DropForeignKey
-ALTER TABLE "public"."posts" DROP CONSTRAINT "posts_authorId_fkey";
-
--- DropTable
-DROP TABLE "public"."posts";
-
--- DropTable
-DROP TABLE "public"."users";
+    CONSTRAINT "users_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "Categories" (
@@ -42,6 +37,9 @@ CREATE TABLE "Comments" (
 
     CONSTRAINT "Comments_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
 -- AddForeignKey
 ALTER TABLE "Posts" ADD CONSTRAINT "Posts_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Categories"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
